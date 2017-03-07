@@ -14,7 +14,7 @@ let file = {
 
 s3Upload(file)
   .then((s3Response) => {
-    // get the url
+    // get the url!
     let url = s3Response.Location;
     return Upload.create({
       title: file.title,
