@@ -27,21 +27,26 @@ const show = (req, res) => {
 };
 
 const create = (req, res, next) => {
-  let file = {
-    title: req.file.originalname,
-    path: req.file.path
-  };
+  // let file = {
+  //   title: req.file.originalname,
+  //   path: req.file.path,
+  //   mimetype: req.file.mimetype,
+  //   originalname: req.file.originalname
+  // };
   //s3 upload takes an object with the file.path and file.title defined
-  s3Upload(file)
+  s3Upload(req.file)
     .then((s3Response) => {
       // get the url!
       let url = s3Response.Location;
       return Upload.create({
-        title: file.title,
+        title: req.file.originalname,
         url: url
       });
     }).then((upload) => res.json({ upload }))
-      .catch((error) => next(error));
+      .catch((error) => {
+        console.log(error);
+        next(console.log(error));
+      });
 };
 
 const update = (req, res, next) => {
